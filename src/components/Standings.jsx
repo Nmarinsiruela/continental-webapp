@@ -18,13 +18,13 @@ const Standings = ({ players }) => {
   };
 
   const getPositionLabel = (index) => {
-    const suffix = ['st', 'nd', 'rd'];
-    return index < 3 ? `${index + 1}${suffix[index]}` : `${index + 1}th`;
+    const suffix = ['º', 'º', 'º'];
+    return `${index + 1}${suffix[index] || 'º'}`;
   };
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-6">
-      <h3 className="text-xl font-bold mb-4 text-gray-800">Current Standings</h3>
+      <h3 className="text-xl font-bold mb-4 text-gray-800">Clasificación Actual</h3>
       <div className="space-y-2">
         {sortedPlayers.map((player, index) => (
           <div

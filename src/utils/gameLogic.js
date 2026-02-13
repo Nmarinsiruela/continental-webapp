@@ -32,10 +32,11 @@ export const sortByScore = (players) => {
 
 /**
  * Validate score input
+ * Allows -10 for perfect play, or any positive integer
  */
 export const validateScore = (value) => {
   const num = Number(value);
-  return !isNaN(num) && num >= 0 && Number.isInteger(num);
+  return !isNaN(num) && Number.isInteger(num) && (num === -10 || num >= 0);
 };
 
 /**

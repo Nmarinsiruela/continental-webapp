@@ -21,7 +21,7 @@ const ScoreBoard = ({ gameState, onSubmitRound }) => {
       </div>
 
       <div className="bg-white rounded-lg shadow-lg p-6">
-        <h3 className="text-xl font-bold mb-4 text-gray-800">Player Details</h3>
+        <h3 className="text-xl font-bold mb-4 text-gray-800">Detalles de Jugadores</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {players.map((player) => (
             <PlayerScore

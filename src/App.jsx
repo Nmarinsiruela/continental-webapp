@@ -19,7 +19,7 @@ function App() {
   const handleNewGame = () => {
     if (gameState.status !== GAME_STATUS.SETUP) {
       const confirmed = window.confirm(
-        'Are you sure you want to start a new game? Current progress will be saved to history.'
+        '¿Estás seguro de que quieres iniciar un nuevo juego? El progreso actual se guardará en el historial.'
       );
       if (confirmed) {
         newGame();

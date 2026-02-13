@@ -12,7 +12,7 @@ const PlayerScore = ({ player, isLeader, currentRound }) => {
       <div className="flex justify-between items-center mb-2">
         <h3 className="font-bold text-lg">{player.name}</h3>
         {isLeader && (
-          <span className="text-green-600 text-sm font-semibold">Leader</span>
+          <span className="text-green-600 text-sm font-semibold">Líder</span>
         )}
       </div>
       <div className="flex flex-wrap gap-2 mb-2">
