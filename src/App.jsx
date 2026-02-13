@@ -30,35 +30,39 @@ function AppContent() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors">
-      <Header
-        gameStatus={gameState.status}
-        currentRound={gameState.currentRound}
-        totalRounds={gameState.totalRounds}
-        onNewGame={handleNewGame}
-      />
-
-      {gameState.status === GAME_STATUS.SETUP && (
-        <GameSetup
-          players={gameState.players}
-          onAddPlayer={addPlayer}
-          onRemovePlayer={removePlayer}
-          onStartGame={startGame}
+    <div className="felt-noise min-h-screen bg-felt-50 bg-felt-texture dark:bg-casino-black dark:bg-felt-texture-dark font-body transition-colors duration-500">
+      <div className="relative z-10">
+        <Header
+          gameStatus={gameState.status}
+          currentRound={gameState.currentRound}
+          totalRounds={gameState.totalRounds}
+          onNewGame={handleNewGame}
         />
-      )}
 
-      {gameState.status === GAME_STATUS.PLAYING && (
-        <ScoreBoard
-          gameState={gameState}
-          onSubmitRound={submitRound}
-        />
-      )}
+        <main className="pb-12">
+          {gameState.status === GAME_STATUS.SETUP && (
+            <GameSetup
+              players={gameState.players}
+              onAddPlayer={addPlayer}
+              onRemovePlayer={removePlayer}
+              onStartGame={startGame}
+            />
+          )}
 
-      {gameState.status === GAME_STATUS.FINISHED && (
-        <WinnerDisplay
-          players={gameState.players}
-        />
-      )}
+          {gameState.status === GAME_STATUS.PLAYING && (
+            <ScoreBoard
+              gameState={gameState}
+              onSubmitRound={submitRound}
+            />
+          )}
+
+          {gameState.status === GAME_STATUS.FINISHED && (
+            <WinnerDisplay
+              players={gameState.players}
+            />
+          )}
+        </main>
+      </div>
     </div>
   );
 }

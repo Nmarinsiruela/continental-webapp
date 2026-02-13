@@ -8,65 +8,87 @@ const WinnerDisplay = ({ players }) => {
   const sortedPlayers = sortByScore(players);
 
   return (
-    <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8">
-      <div className="max-w-3xl mx-auto">
-        <div className="bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-lg shadow-2xl p-5 sm:p-8 mb-4 sm:mb-6 text-center">
-          <h2 className="text-2xl sm:text-4xl font-bold text-white mb-3 sm:mb-4">
-            {t.winner.gameOver}
+    <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8 sm:py-14">
+      {/* Winner spotlight */}
+      <div className="text-center mb-10 sm:mb-14 animate-fade-in">
+        <p className="text-xs font-bold uppercase tracking-[0.25em] text-gold-600 dark:text-gold-500 mb-4">
+          {t.winner.gameOver}
+        </p>
+
+        <div className="relative inline-block mb-6">
+          <div className="absolute -inset-6 bg-gradient-to-b from-gold-400/20 via-gold-400/5 to-transparent dark:from-gold-500/15 dark:via-gold-500/5 rounded-full blur-2xl" />
+          <h2 className="relative font-display text-5xl sm:text-7xl font-bold text-felt-900 dark:text-felt-50 text-shadow-gold tracking-tight">
+            {winner?.name}
           </h2>
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 sm:p-6">
-            <p className="text-xl sm:text-2xl font-semibold text-gray-700 dark:text-gray-200 mb-2">
-              {t.winner.winner}
-            </p>
-            <p className="text-3xl sm:text-5xl font-bold text-yellow-600 dark:text-yellow-400 mb-2">
-              {winner?.name}
-            </p>
-            <p className="text-xl sm:text-3xl text-gray-600 dark:text-gray-300">
-              {t.winner.score.replace('{score}', winner?.totalScore)}
-            </p>
-          </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6 mb-4 sm:mb-6">
-          <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-gray-800 dark:text-gray-100">
-            {t.winner.finalStandings}
-          </h3>
-          <div className="space-y-3">
-            {sortedPlayers.map((player, index) => (
+        <div className="flex items-center justify-center gap-4 text-felt-500 dark:text-felt-400">
+          <div className="gold-line flex-1 max-w-[60px]" />
+          <p className="font-display text-xl sm:text-2xl font-semibold text-gold-600 dark:text-gold-400 tabular-nums">
+            {winner?.totalScore} <span className="text-base font-body font-normal text-felt-400 dark:text-felt-500">pts</span>
+          </p>
+          <div className="gold-line flex-1 max-w-[60px]" />
+        </div>
+      </div>
+
+      {/* Final standings */}
+      <div className="animate-slide-up">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-felt-500 dark:text-felt-500 mb-4 text-center">
+          {t.winner.finalStandings}
+        </p>
+
+        <div className="space-y-2">
+          {sortedPlayers.map((player, index) => {
+            const isWinner = index === 0;
+
+            return (
               <div
                 key={player.id}
-                className={`p-3 sm:p-4 rounded-lg ${
-                  index === 0
-                    ? 'bg-yellow-50 dark:bg-yellow-900/30 border-2 border-yellow-400 dark:border-yellow-600'
-                    : 'bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600'
+                className={`rounded-xl border p-3.5 sm:p-4 transition-all ${
+                  isWinner
+                    ? 'bg-gold-50 dark:bg-gold-950/30 border-gold-300/60 dark:border-gold-700/40 shadow-gold-glow'
+                    : 'bg-white dark:bg-casino-card border-felt-100 dark:border-casino-border'
                 }`}
               >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 sm:gap-4 min-w-0">
-                    <span className="text-xl sm:text-2xl font-bold text-gray-600 dark:text-gray-300 w-8 sm:w-12 shrink-0">
-                      #{index + 1}
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <span className={`w-7 h-7 flex items-center justify-center rounded-lg text-xs font-bold shrink-0 ${
+                      isWinner
+                        ? 'bg-gold-500 text-white'
+                        : 'bg-felt-100 dark:bg-casino-surface text-felt-500 dark:text-felt-400'
+                    }`}>
+                      {index + 1}
                     </span>
-                    <span className="font-bold text-base sm:text-lg truncate dark:text-gray-100">
+                    <span className={`font-semibold truncate ${
+                      isWinner
+                        ? 'text-felt-900 dark:text-gold-200'
+                        : 'text-felt-700 dark:text-felt-200'
+                    }`}>
                       {player.name}
                     </span>
                   </div>
-                  <span className="text-xl sm:text-3xl font-bold text-blue-600 dark:text-blue-400 shrink-0 ml-2">
+                  <span className={`font-display font-bold text-xl tabular-nums shrink-0 ${
+                    isWinner
+                      ? 'text-gold-600 dark:text-gold-400'
+                      : 'text-felt-500 dark:text-felt-400'
+                  }`}>
                     {player.totalScore}
                   </span>
                 </div>
-                <div className="flex flex-wrap gap-1 mt-2 ml-10 sm:ml-16">
+
+                <div className="flex flex-wrap gap-1.5 mt-2.5 ml-10">
                   {player.scores.map((score, idx) => (
                     <span
                       key={idx}
-                      className="text-xs bg-gray-200 dark:bg-gray-600 dark:text-gray-300 px-2 py-0.5 rounded"
+                      className="text-[11px] font-medium tabular-nums bg-felt-50 dark:bg-casino-surface text-felt-500 dark:text-felt-400 px-1.5 py-0.5 rounded-md"
                     >
                       {t.standings.roundLabel.replace('{round}', idx + 1)}: {score}
                     </span>
                   ))}
                 </div>
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
       </div>
     </div>

@@ -1,3 +1,96 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Custom scrollbar for dark mode */
+  .dark ::-webkit-scrollbar {
+    width: 8px;
+  }
+  .dark ::-webkit-scrollbar-track {
+    background: #141a14;
+  }
+  .dark ::-webkit-scrollbar-thumb {
+    background: #2d3a2d;
+    border-radius: 4px;
+  }
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: #3d4a3d;
+  }
+}
+
+@layer components {
+  /* Felt table background noise overlay */
+  .felt-noise {
+    position: relative;
+  }
+  .felt-noise::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+  .dark .felt-noise::before {
+    opacity: 0.06;
+  }
+
+  /* Gold decorative line */
+  .gold-line {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #e6a817, transparent);
+    opacity: 0.4;
+  }
+  .dark .gold-line {
+    opacity: 0.3;
+  }
+
+  /* Card suit decorative element */
+  .suit-decoration::after {
+    content: '\2660 \2665 \2666 \2663';
+    letter-spacing: 0.5em;
+    opacity: 0.06;
+    font-size: 1rem;
+    position: absolute;
+    bottom: 8px;
+    right: 12px;
+    pointer-events: none;
+  }
+  .dark .suit-decoration::after {
+    opacity: 0.08;
+  }
+
+  /* Stagger animation delays */
+  .stagger-1 { animation-delay: 0.05s; }
+  .stagger-2 { animation-delay: 0.1s; }
+  .stagger-3 { animation-delay: 0.15s; }
+  .stagger-4 { animation-delay: 0.2s; }
+  .stagger-5 { animation-delay: 0.25s; }
+  .stagger-6 { animation-delay: 0.3s; }
+  .stagger-7 { animation-delay: 0.35s; }
+  .stagger-8 { animation-delay: 0.4s; }
+}
+
+@layer utilities {
+  .text-shadow-gold {
+    text-shadow: 0 0 40px rgba(230, 168, 23, 0.3);
+  }
+}
+
+/* Number input spinner removal */
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type='number'] {
+  -moz-appearance: textfield;
+}

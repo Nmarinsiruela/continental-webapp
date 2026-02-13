@@ -58,40 +58,43 @@ const ScoreInput = ({ players, currentRound, onSubmit }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6">
-      <h3 className="text-lg sm:text-xl font-bold mb-2 text-gray-800 dark:text-gray-100">
+    <div className="bg-white dark:bg-casino-card border border-felt-100 dark:border-casino-border rounded-2xl shadow-card dark:shadow-card-dark p-5 sm:p-6 animate-scale-in">
+      <h3 className="font-display text-lg sm:text-xl font-bold text-felt-900 dark:text-felt-100 mb-5">
         {t.scoreInput.roundTitle.replace('{round}', currentRound)}
       </h3>
+
       <form onSubmit={handleSubmit}>
-        <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
+        <div className="space-y-3 mb-6">
           {players.map((player) => (
             <div key={player.id}>
               <div className="flex items-center gap-3">
-                <label className="font-semibold text-gray-700 dark:text-gray-200 w-24 sm:w-28 shrink-0 text-sm sm:text-base">
+                <label className="font-medium text-felt-700 dark:text-felt-300 w-24 sm:w-28 shrink-0 text-sm truncate">
                   {player.name}
                 </label>
                 <input
                   type="number"
                   value={scores[player.id]}
                   onChange={(e) => handleScoreChange(player.id, e.target.value)}
-                  className={`flex-1 px-3 sm:px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 bg-white dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 ${errors[player.id]
-                    ? 'border-red-500 focus:ring-red-500'
-                    : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
-                    }`}
+                  className={`flex-1 px-3 py-2.5 rounded-xl border text-sm font-medium bg-felt-50 dark:bg-casino-surface text-felt-900 dark:text-felt-100 placeholder-felt-400 dark:placeholder-felt-600 focus:outline-none focus:ring-2 transition-all ${
+                    errors[player.id]
+                      ? 'border-red-400 dark:border-red-500/60 focus:ring-red-400/30'
+                      : 'border-felt-200 dark:border-casino-border focus:ring-gold-400/40 focus:border-gold-400 dark:focus:ring-gold-500/30 dark:focus:border-gold-600'
+                  }`}
                   placeholder={t.scoreInput.placeholder}
                 />
               </div>
               {errors[player.id] && (
-                <p className="text-red-500 dark:text-red-400 text-xs sm:text-sm mt-1 ml-[6.5rem] sm:ml-[7.75rem]">
+                <p className="text-red-500 dark:text-red-400 text-xs mt-1 ml-[6.5rem] sm:ml-[7.75rem]">
                   {errors[player.id]}
                 </p>
               )}
             </div>
           ))}
         </div>
+
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 transition-colors"
+          className="w-full py-3 rounded-xl font-display font-bold text-base bg-felt-700 dark:bg-felt-600 text-white hover:bg-felt-800 dark:hover:bg-felt-500 active:scale-[0.99] transition-all"
         >
           {t.scoreInput.submitButton}
         </button>
