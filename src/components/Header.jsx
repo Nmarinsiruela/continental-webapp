@@ -40,11 +40,10 @@ const Header = ({ gameStatus, currentRound, totalRounds, onNewGame }) => {
                 <button
                   key={code}
                   onClick={() => setLanguage(code)}
-                  className={`px-2 sm:px-2.5 py-1 sm:py-1.5 text-xs font-semibold rounded-md transition-all duration-200 ${
-                    lang === code
+                  className={`px-2 sm:px-2.5 py-1 sm:py-1.5 text-xs font-semibold rounded-md transition-all duration-200 ${lang === code
                       ? 'bg-white dark:bg-casino-card text-felt-800 dark:text-felt-200 shadow-sm'
                       : 'text-felt-500 dark:text-felt-500 hover:text-felt-700 dark:hover:text-felt-300'
-                  }`}
+                    }`}
                 >
                   {label}
                 </button>
@@ -77,13 +76,12 @@ const Header = ({ gameStatus, currentRound, totalRounds, onNewGame }) => {
                   {Array.from({ length: totalRounds }, (_, i) => (
                     <div
                       key={i}
-                      className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                        i < currentRound - 1
+                      className={`w-2 h-2 rounded-full transition-all duration-300 ${i < currentRound - 1
                           ? 'bg-felt-500 dark:bg-felt-400'
                           : i === currentRound - 1
-                          ? 'bg-gold-500 dark:bg-gold-400 ring-2 ring-gold-200 dark:ring-gold-700 scale-125'
-                          : 'bg-felt-200 dark:bg-casino-border'
-                      }`}
+                            ? 'bg-gold-500 dark:bg-gold-400 ring-2 ring-gold-200 dark:ring-gold-700 scale-125'
+                            : 'bg-felt-200 dark:bg-casino-border'
+                        }`}
                     />
                   ))}
                 </div>
