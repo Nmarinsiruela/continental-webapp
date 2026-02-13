@@ -62,14 +62,12 @@ The built files will be in the `dist` directory.
 
 ### 1. Setup Phase
 - Enter player names one by one
-- Click "Add Player" for each player
-- Remove players if needed
 - Click "Start Game" when you have at least 2 players
 
 ### 2. Playing Phase
 - For each round (1-7):
   - Enter the score for each player
-  - Click "Submit Round"
+  - Click "Next Round"
   - View updated standings and running totals
 - The app automatically advances to the next round
 
@@ -99,6 +97,7 @@ continental-webapp/
 │   │   └── storage.js
 │   ├── constants/       # App constants
 │   │   └── gameConfig.js
+│   │   └── translations.js
 │   ├── App.jsx         # Root component
 │   ├── main.jsx        # Entry point
 │   └── index.css       # Global styles

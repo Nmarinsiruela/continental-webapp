@@ -1,0 +1,167 @@
+export const TRANSLATIONS = {
+  es: {
+    app: {
+      title: 'Continental - Tracker de Puntos',
+      confirmNewGame:
+        '¿Estás seguro de que quieres iniciar un nuevo juego? El progreso actual se guardará en el historial.',
+    },
+    header: {
+      roundOf: 'Ronda {current} de {total}',
+      newGame: 'Nuevo Juego',
+    },
+    setup: {
+      title: 'Configurar Juego',
+      playerPlaceholder: 'Nombre del jugador',
+      addButton: 'Agregar',
+      playersCount: 'Jugadores ({count})',
+      removeButton: 'Eliminar',
+      noPlayers: 'No hay jugadores aún',
+      startGame: 'Iniciar Juego',
+      startGameMin: 'Iniciar Juego (mínimo {min} jugadores)',
+      errorNameRequired: 'Por favor ingresa un nombre',
+      errorMaxPlayers: 'Máximo {max} jugadores permitidos',
+      errorDuplicateName: 'Este nombre ya existe',
+      errorMinPlayers: 'Mínimo {min} jugadores requeridos',
+    },
+    scoreInput: {
+      roundTitle: 'Ronda {round}',
+      placeholder: 'Puntos',
+      submitButton: 'Siguiente Ronda',
+      errorRequired: 'Puntuación requerida',
+      errorInvalid: 'Ingresa un número válido (0 o mayor, o -10 para jugada perfecta)',
+    },
+    standings: {
+      title: 'Clasificación',
+      leader: 'Líder',
+      roundLabel: 'R{round}',
+      total: 'total',
+    },
+    winner: {
+      gameOver: '¡Juego Terminado!',
+      winner: 'Ganador',
+      score: 'Puntuación: {score}',
+      finalStandings: 'Clasificación Final',
+      newGame: 'Iniciar Nuevo Juego',
+    },
+    rounds: [
+      { name: '2 Tríos', description: 'Dos tríos de cartas iguales' },
+      { name: '1 Trío + 1 Escalera de 4', description: 'Un trío y una escalera de 4 cartas' },
+      { name: '2 Escaleras de 4', description: 'Dos escaleras de 4 cartas' },
+      { name: '3 Tríos', description: 'Tres tríos de cartas iguales' },
+      { name: '2 Tríos + 1 Escalera de 4', description: 'Dos tríos y una escalera de 4 cartas' },
+      { name: '1 Trío + 2 Escaleras de 4', description: 'Un trío y dos escaleras de 4 cartas' },
+      { name: '3 Escaleras de 4', description: 'Tres escaleras de 4 cartas' },
+    ],
+  },
+  en: {
+    app: {
+      title: 'Continental - Score Tracker',
+      confirmNewGame:
+        'Are you sure you want to start a new game? Current progress will be saved to history.',
+    },
+    header: {
+      roundOf: 'Round {current} of {total}',
+      newGame: 'New Game',
+    },
+    setup: {
+      title: 'Game Setup',
+      playerPlaceholder: 'Player name',
+      addButton: 'Add',
+      playersCount: 'Players ({count})',
+      removeButton: 'Remove',
+      noPlayers: 'No players yet',
+      startGame: 'Start Game',
+      startGameMin: 'Start Game (minimum {min} players)',
+      errorNameRequired: 'Please enter a name',
+      errorMaxPlayers: 'Maximum {max} players allowed',
+      errorDuplicateName: 'This name already exists',
+      errorMinPlayers: 'Minimum {min} players required',
+    },
+    scoreInput: {
+      roundTitle: 'Round {round}',
+      placeholder: 'Points',
+      submitButton: 'Next Round',
+      errorRequired: 'Score required',
+      errorInvalid: 'Enter a valid number (0 or higher, or -10 for perfect play)',
+    },
+    standings: {
+      title: 'Standings',
+      leader: 'Leader',
+      roundLabel: 'R{round}',
+      total: 'total',
+    },
+    winner: {
+      gameOver: 'Game Over!',
+      winner: 'Winner',
+      score: 'Score: {score}',
+      finalStandings: 'Final Standings',
+      newGame: 'Start New Game',
+    },
+    rounds: [
+      { name: '2 Sets', description: 'Two sets of three matching cards' },
+      { name: '1 Set + 1 Run of 4', description: 'One set and one run of 4 cards' },
+      { name: '2 Runs of 4', description: 'Two runs of 4 cards' },
+      { name: '3 Sets', description: 'Three sets of three matching cards' },
+      { name: '2 Sets + 1 Run of 4', description: 'Two sets and one run of 4 cards' },
+      { name: '1 Set + 2 Runs of 4', description: 'One set and two runs of 4 cards' },
+      { name: '3 Runs of 4', description: 'Three runs of 4 cards' },
+    ],
+  },
+  de: {
+    app: {
+      title: 'Continental - Punktezähler',
+      confirmNewGame:
+        'Bist du sicher, dass du ein neues Spiel starten möchtest? Der aktuelle Fortschritt wird im Verlauf gespeichert.',
+    },
+    header: {
+      roundOf: 'Runde {current} von {total}',
+      newGame: 'Neues Spiel',
+    },
+    setup: {
+      title: 'Spiel einrichten',
+      playerPlaceholder: 'Spielername',
+      addButton: 'Hinzufügen',
+      playersCount: 'Spieler ({count})',
+      removeButton: 'Entfernen',
+      noPlayers: 'Noch keine Spieler',
+      startGame: 'Spiel starten',
+      startGameMin: 'Spiel starten (mindestens {min} Spieler)',
+      errorNameRequired: 'Bitte gib einen Namen ein',
+      errorMaxPlayers: 'Maximal {max} Spieler erlaubt',
+      errorDuplicateName: 'Dieser Name existiert bereits',
+      errorMinPlayers: 'Mindestens {min} Spieler erforderlich',
+    },
+    scoreInput: {
+      roundTitle: 'Runde {round}',
+      placeholder: 'Punkte',
+      submitButton: 'Nächste Runde',
+      errorRequired: 'Punktzahl erforderlich',
+      errorInvalid: 'Gib eine gültige Zahl ein (0 oder höher, oder -10 für perfektes Spiel)',
+    },
+    standings: {
+      title: 'Rangliste',
+      leader: 'Führend',
+      roundLabel: 'R{round}',
+      total: 'gesamt',
+    },
+    winner: {
+      gameOver: 'Spiel beendet!',
+      winner: 'Gewinner',
+      score: 'Punktzahl: {score}',
+      finalStandings: 'Endrangliste',
+      newGame: 'Neues Spiel starten',
+    },
+    rounds: [
+      { name: '2 Drillinge', description: 'Zwei Drillinge gleicher Karten' },
+      { name: '1 Drilling + 1 Straße (4)', description: 'Ein Drilling und eine Straße aus 4 Karten' },
+      { name: '2 Straßen (4)', description: 'Zwei Straßen aus 4 Karten' },
+      { name: '3 Drillinge', description: 'Drei Drillinge gleicher Karten' },
+      { name: '2 Drillinge + 1 Straße (4)', description: 'Zwei Drillinge und eine Straße aus 4 Karten' },
+      { name: '1 Drilling + 2 Straßen (4)', description: 'Ein Drilling und zwei Straßen aus 4 Karten' },
+      { name: '3 Straßen (4)', description: 'Drei Straßen aus 4 Karten' },
+    ],
+  },
+};
+
+export const LANGUAGES = ['es', 'en', 'de'];
+export const DEFAULT_LANG = 'es';
