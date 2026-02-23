@@ -4,11 +4,9 @@ import { useDarkMode } from '../hooks/useDarkMode';
 
 const LANG_LABELS = { es: 'ES', en: 'EN', de: 'DE' };
 
-const Header = ({ gameStatus, currentRound, totalRounds, onNewGame }) => {
+const Header = ({ gameStatus, onNewGame }) => {
   const { t, lang, setLanguage } = useTranslation();
   const { isDark, toggleDarkMode } = useDarkMode();
-  const currentContract = t.rounds[currentRound - 1];
-  const isActive = gameStatus === 'playing' || gameStatus === 'finished';
 
   return (
     <header className="relative border-b border-felt-200/60 dark:border-casino-border bg-white/60 dark:bg-casino-dark/80 backdrop-blur-md">
@@ -17,9 +15,10 @@ const Header = ({ gameStatus, currentRound, totalRounds, onNewGame }) => {
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo / Title */}
           <div className="flex items-center gap-3">
-            <span className="text-felt-700 dark:text-gold-400 text-lg opacity-60" aria-hidden="true">
-              &#9824;
-            </span>
+            <svg className="w-5 h-5 sm:w-6 sm:h-6 text-felt-900 dark:text-white" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <rect x="3" y="2" width="12" height="17" rx="2" fill="none" stroke="currentColor" strokeWidth="1.8" />
+              <rect x="9" y="5" width="12" height="17" rx="2" fill="currentColor" opacity="0.15" stroke="currentColor" strokeWidth="1.8" />
+            </svg>
             <h1 className="font-display text-lg sm:text-2xl font-bold text-felt-900 dark:text-felt-100 tracking-tight">
               Continental
             </h1>
@@ -27,7 +26,7 @@ const Header = ({ gameStatus, currentRound, totalRounds, onNewGame }) => {
 
           {/* Controls */}
           <div className="flex items-center gap-1.5 sm:gap-2">
-            {isActive && (
+            {gameStatus === 'finished' && (
               <button
                 onClick={onNewGame}
                 className="px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-felt-700 dark:text-felt-300 border border-felt-300 dark:border-casino-border rounded-lg hover:bg-felt-100 dark:hover:bg-casino-surface transition-colors"
@@ -67,36 +66,6 @@ const Header = ({ gameStatus, currentRound, totalRounds, onNewGame }) => {
           </div>
         </div>
 
-        {/* Round info bar */}
-        {gameStatus === 'playing' && currentContract && (
-          <div className="pb-4 -mt-1 animate-fade-in">
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-3 min-w-0">
-                <div className="flex items-center gap-2">
-                  {Array.from({ length: totalRounds }, (_, i) => (
-                    <div
-                      key={i}
-                      className={`w-2 h-2 rounded-full transition-all duration-300 ${i < currentRound - 1
-                          ? 'bg-felt-500 dark:bg-felt-400'
-                          : i === currentRound - 1
-                            ? 'bg-gold-500 dark:bg-gold-400 ring-2 ring-gold-200 dark:ring-gold-700 scale-125'
-                            : 'bg-felt-200 dark:bg-casino-border'
-                        }`}
-                    />
-                  ))}
-                </div>
-                <span className="text-xs sm:text-sm text-felt-500 dark:text-felt-500 font-medium whitespace-nowrap">
-                  {t.header.roundOf
-                    .replace('{current}', currentRound)
-                    .replace('{total}', totalRounds)}
-                </span>
-              </div>
-              <span className="text-xs sm:text-sm font-display font-semibold text-gold-700 dark:text-gold-400 truncate text-right">
-                {currentContract.name}
-              </span>
-            </div>
-          </div>
-        )}
       </div>
       <div className="gold-line" />
     </header>

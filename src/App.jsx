@@ -34,8 +34,6 @@ function AppContent() {
       <div className="relative z-10">
         <Header
           gameStatus={gameState.status}
-          currentRound={gameState.currentRound}
-          totalRounds={gameState.totalRounds}
           onNewGame={handleNewGame}
         />
 
@@ -53,6 +51,7 @@ function AppContent() {
             <ScoreBoard
               gameState={gameState}
               onSubmitRound={submitRound}
+              onNewGame={handleNewGame}
             />
           )}
 

@@ -4,6 +4,7 @@ import { useTranslation } from '../hooks/useLanguage';
 
 const ScoreInput = ({ players, currentRound, onSubmit }) => {
   const { t } = useTranslation();
+  const currentContract = t.rounds[currentRound - 1];
   const [scores, setScores] = useState(
     players.reduce((acc, player) => {
       acc[player.id] = '';
@@ -59,37 +60,68 @@ const ScoreInput = ({ players, currentRound, onSubmit }) => {
 
   return (
     <div className="bg-white dark:bg-casino-card border border-felt-100 dark:border-casino-border rounded-2xl shadow-card dark:shadow-card-dark p-5 sm:p-6 animate-scale-in">
-      <h3 className="font-display text-lg sm:text-xl font-bold text-felt-900 dark:text-felt-100 mb-5">
-        {t.scoreInput.roundTitle.replace('{round}', currentRound)}
-      </h3>
+      {/* Contract name */}
+      {currentContract && (
+        <h3 className="text-lg sm:text-xl font-bold text-gold-700 dark:text-gold-400 text-center mb-5">
+          {currentContract.name}
+        </h3>
+      )}
 
       <form onSubmit={handleSubmit}>
         <div className="space-y-3 mb-6">
-          {players.map((player) => (
-            <div key={player.id}>
-              <div className="flex items-center gap-3">
-                <label className="font-medium text-felt-700 dark:text-felt-300 w-24 sm:w-28 shrink-0 text-sm truncate">
-                  {player.name}
-                </label>
-                <input
-                  type="number"
-                  value={scores[player.id]}
-                  onChange={(e) => handleScoreChange(player.id, e.target.value)}
-                  className={`flex-1 px-3 py-2.5 rounded-xl border text-sm font-medium bg-felt-50 dark:bg-casino-surface text-felt-900 dark:text-felt-100 placeholder-felt-400 dark:placeholder-felt-600 focus:outline-none focus:ring-2 transition-all ${
-                    errors[player.id]
-                      ? 'border-red-400 dark:border-red-500/60 focus:ring-red-400/30'
-                      : 'border-felt-200 dark:border-casino-border focus:ring-gold-400/40 focus:border-gold-400 dark:focus:ring-gold-500/30 dark:focus:border-gold-600'
-                  }`}
-                  placeholder={t.scoreInput.placeholder}
-                />
+          {players.map((player) => {
+            const score = scores[player.id];
+            const isZero = score === 0 || score === '0';
+            const isPerfect = score === -10 || score === '-10';
+            return (
+              <div key={player.id}>
+                <div className="flex items-center gap-2">
+                  <label className="font-medium text-felt-700 dark:text-felt-300 w-20 sm:w-28 shrink-0 text-sm truncate">
+                    {player.name}
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => handleScoreChange(player.id, isZero ? '' : '0')}
+                    className={`shrink-0 w-10 h-10 rounded-xl text-sm font-bold transition-all ${
+                      isZero
+                        ? 'bg-felt-600 dark:bg-felt-500 text-white ring-2 ring-felt-400/40'
+                        : 'bg-felt-100 dark:bg-casino-surface text-felt-600 dark:text-felt-400 border border-felt-200 dark:border-casino-border hover:bg-felt-200 dark:hover:bg-casino-border'
+                    }`}
+                  >
+                    0
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleScoreChange(player.id, isPerfect ? '' : '-10')}
+                    className={`shrink-0 h-10 px-2 rounded-xl text-sm font-bold transition-all ${
+                      isPerfect
+                        ? 'bg-gold-500 dark:bg-gold-600 text-white ring-2 ring-gold-400/40'
+                        : 'bg-felt-100 dark:bg-casino-surface text-gold-700 dark:text-gold-400 border border-felt-200 dark:border-casino-border hover:bg-felt-200 dark:hover:bg-casino-border'
+                    }`}
+                  >
+                    -10
+                  </button>
+                  <input
+                    type="number"
+                    min="0"
+                    value={isPerfect || isZero ? '' : score}
+                    onChange={(e) => handleScoreChange(player.id, e.target.value)}
+                    className={`flex-1 min-w-0 px-3 py-2.5 rounded-xl border text-sm font-medium bg-felt-50 dark:bg-casino-surface text-felt-900 dark:text-felt-100 placeholder-felt-400 dark:placeholder-felt-600 focus:outline-none focus:ring-2 transition-all ${
+                      errors[player.id]
+                        ? 'border-red-400 dark:border-red-500/60 focus:ring-red-400/30'
+                        : 'border-felt-200 dark:border-casino-border focus:ring-gold-400/40 focus:border-gold-400 dark:focus:ring-gold-500/30 dark:focus:border-gold-600'
+                    }`}
+                    placeholder={t.scoreInput.placeholder}
+                  />
+                </div>
+                {errors[player.id] && (
+                  <p className="text-red-500 dark:text-red-400 text-xs mt-1 ml-[5.5rem] sm:ml-[7.75rem]">
+                    {errors[player.id]}
+                  </p>
+                )}
               </div>
-              {errors[player.id] && (
-                <p className="text-red-500 dark:text-red-400 text-xs mt-1 ml-[6.5rem] sm:ml-[7.75rem]">
-                  {errors[player.id]}
-                </p>
-              )}
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         <button
