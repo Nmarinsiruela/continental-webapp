@@ -11,6 +11,13 @@ export default {
         display: ['"Playfair Display"', 'Georgia', 'serif'],
         body: ['"DM Sans"', 'system-ui', 'sans-serif'],
       },
+      // Accessible palette — every text/background pairing used in the app is
+      // listed in scripts/check-contrast.js and verified with `npm run check:contrast`.
+      // Rules of thumb:
+      //   • White text only on felt-700 or darker (≥ 5.4:1).
+      //   • Gold surfaces carry dark ink (felt-950), never white.
+      //   • Secondary text: felt-700 (light) / felt-300 (dark). Never felt-400–600 for text on light.
+      //   • Form-control borders use `line` (≥ 3:1 against their surface).
       colors: {
         felt: {
           50: '#f0fdfb',
@@ -33,9 +40,9 @@ export default {
           400: '#f2c44a',
           500: '#e6a817',
           600: '#cc8a0e',
-          700: '#a96a0f',
-          800: '#8a5413',
-          900: '#724513',
+          700: '#94600f', // darkened from #a96a0f so gold text passes AA on light surfaces
+          800: '#7a4b12',
+          900: '#5f3a10',
           950: '#422406',
         },
         casino: {
@@ -43,7 +50,21 @@ export default {
           dark: '#111a1a',
           card: '#182424',
           surface: '#1f2e2e',
-          border: '#283a3a',
+          border: '#283a3a', // decorative dividers only — use `line-dark` for controls
+        },
+        // Form-control outlines (WCAG 1.4.11 non-text contrast ≥ 3:1)
+        line: {
+          DEFAULT: '#4f8a84',
+          dark: '#5f817d',
+        },
+        // Playing-card faces (start screen + guide). Dimmed in dark mode to avoid glare.
+        paper: {
+          DEFAULT: '#ffffff',
+          dim: '#e4ebe9',
+        },
+        // Red card suits (♥ ♦) — passes AA on both paper tones
+        suit: {
+          red: '#b91c1c',
         },
       },
       backgroundImage: {
@@ -62,8 +83,15 @@ export default {
         'slide-up': 'slideUp 0.5s ease-out forwards',
         'scale-in': 'scaleIn 0.4s ease-out forwards',
         'shimmer': 'shimmer 3s ease-in-out infinite',
+        // `backwards` (not `forwards`) so the card's own transform takes over
+        // after the deal and hover/focus can still straighten it.
+        'deal': 'deal 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) backwards',
       },
       keyframes: {
+        deal: {
+          '0%': { opacity: '0', transform: 'translateY(48px) rotate(0deg)' },
+          '100%': { opacity: '1', transform: 'translateY(0) rotate(var(--tilt, 0deg))' },
+        },
         fadeIn: {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },

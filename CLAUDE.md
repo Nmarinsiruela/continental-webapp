@@ -10,7 +10,10 @@
 ```
 src/
 ├── components/
-│   ├── Header.jsx          # Top nav: title, round progress dots, language switcher, dark mode toggle
+│   ├── Header.jsx          # Top nav: brand (= home button), language switcher, dark mode toggle
+│   ├── StartScreen.jsx     # Landing screen: title + two playing-card buttons (Play / How to play)
+│   ├── HowToPlay.jsx       # Rules guide: melds, turn steps, 7 contracts, scoring, card values
+│   ├── Cards.jsx           # Playing-card primitives: HandCard, MiniCard, SetGlyph, RunGlyph
 │   ├── GameSetup.jsx       # Setup screen: add/remove players, start game
 │   ├── ScoreBoard.jsx      # Playing layout: 2-col grid (ScoreInput + Standings)
 │   ├── ScoreInput.jsx      # Per-round score entry form with validation
@@ -25,9 +28,9 @@ src/
 │   ├── gameLogic.js        # Scoring, validation, sorting, player factory
 │   └── storage.js          # Game history persistence (last 20 games)
 ├── constants/
-│   ├── gameConfig.js       # TOTAL_ROUNDS=7, MIN_PLAYERS=2, MAX_PLAYERS=8, GAME_STATUS enum
+│   ├── gameConfig.js       # TOTAL_ROUNDS=7, MIN/MAX_PLAYERS, GAME_STATUS, VIEWS, CONTRACT_MELDS
 │   └── translations.js     # All UI strings in ES/EN/DE, round contract names
-├── App.jsx                 # Root: DarkModeProvider > LanguageProvider > AppContent
+├── App.jsx                 # Root: DarkModeProvider > LanguageProvider > AppContent (holds `view` state)
 ├── index.css               # Tailwind directives + custom components (felt-noise, gold-line, suit-decoration, stagger animations)
 └── main.jsx                # React entry point
 ```
@@ -38,9 +41,27 @@ src/
   - `felt-*` (sea green/teal scale) — primary palette
   - `gold-*` (warm amber) — accents, CTAs, winner highlights
   - `casino-*` (teal-tinted darks) — dark mode surfaces
-- **Custom utilities**: `shadow-card`, `shadow-gold-glow`, `animate-fade-in`, `animate-slide-up`, `animate-scale-in`
-- **CSS components** in `index.css`: `.felt-noise` (texture overlay), `.gold-line` (decorative separator), `.suit-decoration`, `.stagger-N` (animation delays)
+  - `line` / `line-dark` — form-control borders (≥ 3:1 non-text contrast)
+  - `paper` / `paper-dim` — playing-card faces; `suit-red` — red suits
+- **Custom utilities**: `shadow-card`, `shadow-gold-glow`, `animate-fade-in`, `animate-slide-up`, `animate-scale-in`, `animate-deal`
+- **CSS components** in `index.css`: `.felt-noise` (texture overlay), `.gold-line` (decorative separator), `.suit-decoration`, `.hand-card` (tilted start-screen card), `.stagger-N` (animation delays)
 - Number input spinners are globally removed via CSS
+
+## Accessibility (WCAG 2.2 AA)
+- **Colour pairings must pass `npm run check:contrast`.** Add every new text/background pair to `scripts/check-contrast.js`.
+  - White text only on `felt-700` or darker. Gold surfaces (`gold-300/400`) take `text-felt-950`, never white.
+  - Secondary text: `text-felt-700 dark:text-felt-300`. Never `felt-400`–`felt-600` for text on light backgrounds.
+  - Errors: `text-red-700 dark:text-red-300`. Gold text: `gold-700` (light) / `gold-300`–`gold-400` (dark).
+  - Inputs and outlined buttons: `border-line dark:border-line-dark`.
+- Focus: a global `:focus-visible` ring lives in `index.css` — don't add `outline-none`/`focus:outline-none` to controls.
+- `prefers-reduced-motion` is honoured globally in `index.css`.
+- Every screen has one `<h1 tabIndex={-1}>`; `App` focuses it when the screen changes.
+- Toggle buttons use `aria-pressed`; icon-only buttons need a translated `aria-label`; never convey state by colour alone.
+- `<html lang>` is synced to the selected language by `LanguageProvider`.
+
+## Navigation
+- No router. `App` holds `view` (`VIEWS.HOME | GUIDE | GAME`); the app always opens on `HOME`.
+- `GAME` view renders setup / scoreboard / winner based on `gameState.status`. The start screen's Play card reads "Continue game" or "See results" when a saved game exists.
 
 ## Game Rules
 - 7 rounds, each with a contract (trios + runs of cards)
@@ -66,6 +87,7 @@ npm run dev      # Start dev server
 npm run build    # Production build to dist/
 npm run preview  # Preview production build
 npm run lint     # ESLint
+npm run check:contrast  # Verify every colour pairing meets WCAG AA
 ```
 
 ## Key Patterns

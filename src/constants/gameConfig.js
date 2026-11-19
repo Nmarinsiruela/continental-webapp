@@ -15,6 +15,24 @@ export const GAME_STATUS = {
   FINISHED: 'finished',
 };
 
+// Top-level screens (no router — App switches on this)
+export const VIEWS = {
+  HOME: 'home',
+  GUIDE: 'guide',
+  GAME: 'game',
+};
+
+// Meld structure of each round's contract, used to draw the contract diagrams
+export const CONTRACT_MELDS = [
+  { sets: 2, runs: 0 },
+  { sets: 1, runs: 1 },
+  { sets: 0, runs: 2 },
+  { sets: 3, runs: 0 },
+  { sets: 2, runs: 1 },
+  { sets: 1, runs: 2 },
+  { sets: 0, runs: 3 },
+];
+
 // Round contracts in Spanish
 export const ROUND_CONTRACTS = [
   { round: 1, name: '2 Tríos', description: 'Dos tríos de cartas iguales' },

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import { flushSync } from 'react-dom';
 import { validateScore } from '../utils/gameLogic';
 import { useTranslation } from '../hooks/useLanguage';
 
@@ -12,6 +13,10 @@ const ScoreInput = ({ players, currentRound, onSubmit }) => {
     }, {})
   );
   const [errors, setErrors] = useState({});
+  // Bumped on every failed submit so the screen-reader alert remounts and is
+  // re-announced, even when the same errors repeat.
+  const [failedSubmits, setFailedSubmits] = useState(0);
+  const inputRefs = useRef({});
 
   const handleScoreChange = (playerId, value) => {
     setScores((prev) => ({
@@ -45,7 +50,15 @@ const ScoreInput = ({ players, currentRound, onSubmit }) => {
     });
 
     if (Object.keys(newErrors).length) {
-      setErrors(newErrors);
+      // Render synchronously so the input already carries aria-invalid and
+      // aria-describedby → error text when focus lands on it below.
+      flushSync(() => {
+        setErrors(newErrors);
+        setFailedSubmits((n) => n + 1);
+      });
+      // Take keyboard / screen-reader users straight to the first problem
+      const firstInvalid = players.find((p) => newErrors[p.id]);
+      inputRefs.current[firstInvalid.id]?.focus();
       return;
     }
 
@@ -62,30 +75,54 @@ const ScoreInput = ({ players, currentRound, onSubmit }) => {
     <div className="bg-white dark:bg-casino-card border border-felt-100 dark:border-casino-border rounded-2xl shadow-card dark:shadow-card-dark p-5 sm:p-6 animate-scale-in">
       {/* Contract name */}
       {currentContract && (
-        <h3 className="text-lg sm:text-xl font-bold text-gold-700 dark:text-gold-400 text-center mb-5">
+        <h2 className="text-lg sm:text-xl font-bold text-gold-700 dark:text-gold-400 text-center mb-2">
           {currentContract.name}
-        </h3>
+        </h2>
       )}
+      <p id="score-hint" className="text-sm text-felt-700 dark:text-felt-300 text-center mb-5">
+        {t.scoreInput.hint}
+      </p>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} noValidate>
+        {/* Announces a failed submit even when focus doesn't move (e.g. Enter
+            pressed inside the only invalid field) */}
+        {Object.keys(errors).length > 0 && (
+          <p key={failedSubmits} role="alert" className="sr-only">
+            {t.scoreInput.errorSummary.replace(
+              '{names}',
+              players.filter((p) => errors[p.id]).map((p) => p.name).join(', ')
+            )}
+          </p>
+        )}
         <div className="space-y-3 mb-6">
           {players.map((player) => {
             const score = scores[player.id];
             const isZero = score === 0 || score === '0';
             const isPerfect = score === -10 || score === '-10';
+            const nameId = `score-name-${player.id}`;
+            const inputId = `score-input-${player.id}`;
+            const errorId = `score-error-${player.id}`;
+            const error = errors[player.id];
             return (
-              <div key={player.id}>
+              <div key={player.id} role="group" aria-labelledby={nameId}>
                 <div className="flex items-center gap-2">
-                  <label className="font-medium text-felt-700 dark:text-felt-300 w-20 sm:w-28 shrink-0 text-sm truncate">
+                  <label
+                    id={nameId}
+                    htmlFor={inputId}
+                    title={player.name}
+                    className="font-semibold text-felt-900 dark:text-felt-100 w-20 sm:w-28 shrink-0 text-sm truncate"
+                  >
                     {player.name}
                   </label>
                   <button
                     type="button"
                     onClick={() => handleScoreChange(player.id, isZero ? '' : '0')}
-                    className={`shrink-0 w-10 h-10 rounded-xl text-sm font-bold transition-all ${
+                    aria-pressed={isZero}
+                    aria-label={t.scoreInput.wentOut}
+                    className={`shrink-0 w-11 h-11 rounded-xl text-sm font-bold transition-colors ${
                       isZero
-                        ? 'bg-felt-600 dark:bg-felt-500 text-white ring-2 ring-felt-400/40'
-                        : 'bg-felt-100 dark:bg-casino-surface text-felt-600 dark:text-felt-400 border border-felt-200 dark:border-casino-border hover:bg-felt-200 dark:hover:bg-casino-border'
+                        ? 'bg-felt-700 text-white border border-felt-700'
+                        : 'bg-felt-50 dark:bg-casino-surface text-felt-800 dark:text-felt-200 border border-line dark:border-line-dark hover:bg-felt-100 dark:hover:bg-casino-border'
                     }`}
                   >
                     0
@@ -93,30 +130,37 @@ const ScoreInput = ({ players, currentRound, onSubmit }) => {
                   <button
                     type="button"
                     onClick={() => handleScoreChange(player.id, isPerfect ? '' : '-10')}
-                    className={`shrink-0 h-10 px-2 rounded-xl text-sm font-bold transition-all ${
+                    aria-pressed={isPerfect}
+                    aria-label={t.scoreInput.perfectPlay}
+                    className={`shrink-0 h-11 px-2.5 rounded-xl text-sm font-bold tabular-nums transition-colors ${
                       isPerfect
-                        ? 'bg-gold-500 dark:bg-gold-600 text-white ring-2 ring-gold-400/40'
-                        : 'bg-felt-100 dark:bg-casino-surface text-gold-700 dark:text-gold-400 border border-felt-200 dark:border-casino-border hover:bg-felt-200 dark:hover:bg-casino-border'
+                        ? 'bg-gold-400 text-felt-950 border border-gold-700'
+                        : 'bg-felt-50 dark:bg-casino-surface text-gold-800 dark:text-gold-300 border border-line dark:border-line-dark hover:bg-felt-100 dark:hover:bg-casino-border'
                     }`}
                   >
-                    -10
+                    −10
                   </button>
                   <input
+                    ref={(el) => {
+                      inputRefs.current[player.id] = el;
+                    }}
+                    id={inputId}
                     type="number"
+                    inputMode="numeric"
                     min="0"
                     value={isPerfect || isZero ? '' : score}
                     onChange={(e) => handleScoreChange(player.id, e.target.value)}
-                    className={`flex-1 min-w-0 px-3 py-2.5 rounded-xl border text-sm font-medium bg-felt-50 dark:bg-casino-surface text-felt-900 dark:text-felt-100 placeholder-felt-400 dark:placeholder-felt-600 focus:outline-none focus:ring-2 transition-all ${
-                      errors[player.id]
-                        ? 'border-red-400 dark:border-red-500/60 focus:ring-red-400/30'
-                        : 'border-felt-200 dark:border-casino-border focus:ring-gold-400/40 focus:border-gold-400 dark:focus:ring-gold-500/30 dark:focus:border-gold-600'
+                    aria-invalid={error ? true : undefined}
+                    aria-describedby={error ? `${errorId} score-hint` : 'score-hint'}
+                    className={`flex-1 min-w-0 h-11 px-3 rounded-xl border text-sm font-medium bg-white dark:bg-casino-surface text-felt-950 dark:text-felt-50 placeholder-felt-700 dark:placeholder-felt-400 transition-colors ${
+                      error ? 'border-red-700 dark:border-red-300 border-2' : 'border-line dark:border-line-dark'
                     }`}
                     placeholder={t.scoreInput.placeholder}
                   />
                 </div>
-                {errors[player.id] && (
-                  <p className="text-red-500 dark:text-red-400 text-xs mt-1 ml-[5.5rem] sm:ml-[7.75rem]">
-                    {errors[player.id]}
+                {error && (
+                  <p id={errorId} className="text-red-700 dark:text-red-300 text-sm font-medium mt-1 ml-[5.5rem] sm:ml-[7.5rem]">
+                    {error}
                   </p>
                 )}
               </div>
@@ -126,7 +170,7 @@ const ScoreInput = ({ players, currentRound, onSubmit }) => {
 
         <button
           type="submit"
-          className="w-full py-3 rounded-xl font-display font-bold text-base bg-felt-700 dark:bg-felt-600 text-white hover:bg-felt-800 dark:hover:bg-felt-500 active:scale-[0.99] transition-all"
+          className="w-full py-3 rounded-xl font-display font-bold text-base bg-felt-700 text-white hover:bg-felt-800 active:scale-[0.99] transition-all"
         >
           {t.scoreInput.submitButton}
         </button>

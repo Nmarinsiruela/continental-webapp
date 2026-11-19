@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { TRANSLATIONS, LANGUAGES, DEFAULT_LANG } from '../constants/translations';
 
 const LanguageContext = createContext();
@@ -29,6 +29,11 @@ export const LanguageProvider = ({ children }) => {
       localStorage.setItem('continental_lang', newLang);
     } catch {}
   };
+
+  // Keep <html lang> in sync so screen readers use the right pronunciation
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
 
   const t = TRANSLATIONS[lang];
 

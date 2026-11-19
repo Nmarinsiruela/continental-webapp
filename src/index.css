@@ -9,6 +9,40 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
+  /* Keep focused controls clear of the fixed round-progress footer on the
+     score screen (WCAG 2.4.11 Focus Not Obscured). */
+  html {
+    scroll-padding-bottom: 5rem;
+  }
+
+  /* Keyboard focus — one consistent, high-contrast ring everywhere.
+     felt-900 on light surfaces (≥ 9:1), gold-300 on dark (≥ 11:1). */
+  :focus-visible {
+    outline: 3px solid theme('colors.felt.900');
+    outline-offset: 2px;
+  }
+  .dark :focus-visible {
+    outline-color: theme('colors.gold.300');
+  }
+  /* Headings that receive focus on page change aren't interactive */
+  [tabindex='-1']:focus {
+    outline: none;
+  }
+
+  /* Respect the OS "reduce motion" setting. Animations still run to their end
+     state (so elements that start at opacity-0 become visible), just instantly. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-delay: 0ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
   /* Custom scrollbar for dark mode */
   .dark ::-webkit-scrollbar {
     width: 8px;
@@ -66,6 +100,19 @@
   }
   .dark .suit-decoration::after {
     opacity: 0.08;
+  }
+
+  /* Start-screen playing cards: tilted in the hand, straighten on hover/focus */
+  .hand-card {
+    transform: rotate(var(--tilt, 0deg));
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease;
+  }
+  .hand-card:hover,
+  .hand-card:focus-visible {
+    transform: translateY(-10px) rotate(0deg);
+  }
+  .hand-card:active {
+    transform: translateY(-4px) rotate(0deg) scale(0.98);
   }
 
   /* Stagger animation delays */
