@@ -39,6 +39,7 @@ export const TRANSLATIONS = {
     },
     scoreInput: {
       roundTitle: 'Ronda {round}',
+      cards: '{count} cartas',
       placeholder: 'Puntos',
       submitButton: 'Siguiente Ronda',
       errorRequired: 'Puntuación requerida',
@@ -163,6 +164,7 @@ export const TRANSLATIONS = {
     },
     scoreInput: {
       roundTitle: 'Round {round}',
+      cards: '{count} cards',
       placeholder: 'Points',
       submitButton: 'Next Round',
       errorRequired: 'Score required',
@@ -286,6 +288,7 @@ export const TRANSLATIONS = {
     },
     scoreInput: {
       roundTitle: 'Runde {round}',
+      cards: '{count} Karten',
       placeholder: 'Punkte',
       submitButton: 'Nächste Runde',
       errorRequired: 'Punktzahl erforderlich',

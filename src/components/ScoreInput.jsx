@@ -75,9 +75,14 @@ const ScoreInput = ({ players, currentRound, onSubmit }) => {
     <div className="bg-white dark:bg-casino-card border border-felt-100 dark:border-casino-border rounded-2xl shadow-card dark:shadow-card-dark p-5 sm:p-6 animate-scale-in">
       {/* Contract name */}
       {currentContract && (
-        <h2 className="text-lg sm:text-xl font-bold text-gold-700 dark:text-gold-400 text-center mb-2">
-          {currentContract.name}
-        </h2>
+        <div className="text-center mb-3">
+          <h2 className="text-lg sm:text-xl font-bold text-gold-700 dark:text-gold-400">
+            {currentContract.name}
+          </h2>
+          <p className="text-xs sm:text-sm font-medium text-felt-700 dark:text-felt-300 mt-1">
+            {t.scoreInput.cards.replace('{count}', String(currentRound + 6))}
+          </p>
+        </div>
       )}
       <p id="score-hint" className="text-sm text-felt-700 dark:text-felt-300 text-center mb-5">
         {t.scoreInput.hint}
